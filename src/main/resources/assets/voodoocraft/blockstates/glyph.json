@@ -1,0 +1,26 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+    	"model": "voodoocraft:glyph"
+	},
+	"variants": {
+  		"type": {
+  			"basic": {"textures": {"symbol": "voodoocraft:blocks/glyph_basic"}},
+  			"air": {"textures": {"symbol": "voodoocraft:blocks/glyph_air"}},
+  			"earth": {"textures": {"symbol": "voodoocraft:blocks/glyph_earth"}},
+  			"fire": {"textures": {"symbol": "voodoocraft:blocks/glyph_fire"}},
+  			"water": {"textures": {"symbol": "voodoocraft:blocks/glyph_water"}},
+  			"life": {"textures": {"symbol": "voodoocraft:blocks/glyph_life"}},
+  			"death": {"textures": {"symbol": "voodoocraft:blocks/glyph_death"}},
+  			"light": {"textures": {"symbol": "voodoocraft:blocks/glyph_light"}},
+  			"dark": {"textures": {"symbol": "voodoocraft:blocks/glyph_dark"}},
+  			"time": {"textures": {"symbol": "voodoocraft:blocks/glyph_time"}},
+  			"speed": {"textures": {"symbol": "voodoocraft:blocks/glyph_speed"}},
+  			"power": {"textures": {"symbol": "voodoocraft:blocks/glyph_power"}},
+  			"link": {"textures": {"symbol": "voodoocraft:blocks/glyph_link"}},
+  			"undefined1": {"textures": {"symbol": "voodoocraft:blocks/glyph_"}},
+  			"undefined2": {"textures": {"symbol": "voodoocraft:blocks/glyph_"}},
+  			"undefined3": {"textures": {"symbol": "voodoocraft:blocks/glyph_"}}
+  		}
+	}
+}

@@ -1,0 +1,18 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "particle": "voodoocraft:blocks/glyph_basic",
+        "symbol": "voodoocraft:blocks/glyph_basic"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 1.0, 16.0 ],
+            "faces": {
+                "up": { "texture": "#symbol", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#symbol", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "down" }
+            }
+        }
+    ]
+}

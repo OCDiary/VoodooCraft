@@ -1,0 +1,8 @@
+{
+  "lightritual": { "category": "player", "sounds": ["voodoocraft:lightritual"], "subtitle": "voodoocraft.subtitle.lightritual" },
+  "rainritual": { "category": "player", "sounds": ["voodoocraft:rainritual"], "subtitle": "voodoocraft.subtitle.rainritual" },
+  "spiritguideritual": { "category": "player", "sounds": ["voodoocraft:spiritguideritual"], "subtitle": "voodoocraft.subtitle.spiritguideritual" },
+  "summonritual": { "category": "player", "sounds": ["voodoocraft:summonritual"], "subtitle": "voodoocraft.subtitle.summonritual" },
+  "transformation": { "category": "player", "sounds": ["voodoocraft:transformation"], "subtitle": "voodoocraft.subtitle.transformation" },
+  "templeritual": { "category": "player", "sounds": ["voodoocraft:templeritual"], "subtitle": "voodoocraft.subtitle.templeritual" }
+}

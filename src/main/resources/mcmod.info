@@ -1,0 +1,16 @@
+[
+{
+  "modid": "voodoocraft",
+  "name": "VoodooCraft",
+  "description": "This is a mod that introduces the good, the bad and the ugly of Voodoo to minecraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["OCDiary", "bright_spark", "Alex Couch", "UpcraftLP", "Alxnns1", "TheUnderTaker11"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

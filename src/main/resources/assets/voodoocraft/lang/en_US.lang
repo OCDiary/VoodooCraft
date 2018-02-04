@@ -1,0 +1,40 @@
+#PARSE_ESCAPES
+
+#General
+itemGroup.tabVoodoo.name=VoodooCraft
+desc.hex.name=Current Hex applied:
+
+#Items
+item.doll.name=Voodoo Doll
+item.coin.name=Gold Voodoo Coin
+
+#Blocks
+tile.totem.name=Totem
+tile.death_glyph.name=Death Glyph
+
+#Hexes
+hex.regeneration.name=Regeneration
+desc.hex.regeneration.name=gives you regeneration!
+
+#Commands
+
+#Misc
+press.for.info.name=Press %s for more information
+shard.type.name=Shard Bound To: %s
+shard.type.empty.name=Empty Shard
+voodoo.glyphset.info=Glyph set: %s
+
+#Glyphs
+glyph.basic.name=Basic
+glyph.air.name=Air
+glyph.earth.name=Earth
+glyph.fire.name=Fire
+glyph.water.name=Water
+glyph.life.name=Life
+glyph.death.name=Death
+glyph.light.name=Light
+glyph.dark.name=Dark
+glyph.time.name=Time
+glyph.speed.name=Speed
+glyph.power.name=Power
+glyph.link.name=Link
