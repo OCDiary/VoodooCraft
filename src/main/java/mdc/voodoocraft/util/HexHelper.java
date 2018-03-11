@@ -63,7 +63,7 @@ public class HexHelper {
 
 		NBTTagList hexList = new NBTTagList();
 		for(Hex h : hexes)
-			hexList.appendTag(h.writeToNBT());
+			hexList.appendTag(h.serializeNBT());
 
 		stackNBT.setTag(KEY_HEXES, hexList);
 		stackIn.setTagCompound(stackNBT); //update the actual compound
@@ -103,9 +103,9 @@ public class HexHelper {
 			for(Hex h : hexes)
 			{
 				if(passive)
-					stack = h.passiveUse(stack, world, player);
+					stack = h.passiveUse(stack, world, target);
 				else
-					stack = h.activeUse(stack, world, player, target);
+					stack = h.activeUse(stack, world, player, hand, target);
 				multiplier += h.getCost();
 	        }
 			stack.damageItem(multiplier * hexes.size(), player);

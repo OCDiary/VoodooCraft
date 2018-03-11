@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -53,6 +54,11 @@ public class Hex implements INBTSerializable<NBTTagCompound>
 	public ItemStack activeUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand, @Nullable EntityLivingBase target)
 	{
 		return entry.activeUse(stack, world, player, hand, getStrength(), target);
+	}
+
+	public ItemStack passiveUse(ItemStack stack, World world, @Nullable EntityLivingBase target)
+	{
+		return entry.passiveUse(stack, world, getStrength(), target);
 	}
 
 	@Override

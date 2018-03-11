@@ -1,7 +1,7 @@
 package mdc.voodoocraft.hexes;
 
-import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.init.VCSoundHandler;
+import mdc.voodoocraft.util.ClientUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -20,7 +20,8 @@ public class HexZombify extends HexEntry {
     }
 
     @Override
-    public ItemStack activeUse(ItemStack stackIn, World world, EntityPlayer player, int strength, @Nullable EntityLivingBase target) {
+    public ItemStack activeUse(ItemStack stackIn, World world, EntityPlayer player, EnumHand hand, int strength, @Nullable EntityLivingBase target)
+    {
         if(!world.isRemote) {
             if (target instanceof EntityZombie) {
                 EntityVillager villager = new EntityVillager(world);
@@ -40,10 +41,10 @@ public class HexZombify extends HexEntry {
 
         if(target instanceof EntityZombie || target instanceof EntityVillager)
         {
-            VoodooCraft.proxy.spawnParticle(world, EnumParticleTypes.EXPLOSION_NORMAL, target.posX, target.posY, target.posZ);
+            ClientUtil.spawnParticle(world, EnumParticleTypes.EXPLOSION_NORMAL, target.getPosition());
             player.playSound(VCSoundHandler.transformation, 1.0F, 1.0F);
         }
 
-        return super.activeUse(stackIn, world, player, strength, target);
+        return super.activeUse(stackIn, world, player, hand, strength, target);
     }
 }

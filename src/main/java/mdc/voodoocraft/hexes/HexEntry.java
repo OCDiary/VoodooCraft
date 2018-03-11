@@ -9,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -86,7 +87,7 @@ public class HexEntry extends IForgeRegistryEntry.Impl<HexEntry>
     /**
      * Called by the {@link Hex} to execute the passive use of this hex while in a Doll Pedestal
      */
-	public ItemStack passiveUse(ItemStack stack, World world, EntityPlayer player, int strength)
+	public ItemStack passiveUse(ItemStack stack, World world, int strength, @Nullable EntityLivingBase target)
     {
         return stack;
     }
