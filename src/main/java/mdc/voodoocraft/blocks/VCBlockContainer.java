@@ -8,7 +8,7 @@ public abstract class VCBlockContainer extends VCBlock implements ITileEntityPro
     public VCBlockContainer(String name, Material mat)
     {
         super(name, mat);
-        isBlockContainer = true;
+        hasTileEntity = true;
     }
 
     public VCBlockContainer(String name)

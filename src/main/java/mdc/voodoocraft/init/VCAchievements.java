@@ -43,7 +43,7 @@ public class VCAchievements {
             a = new Achievement("achievement."+name, name, column, row, (ItemStack) o, parent);
         else
         {
-            VoodooCraft.log.warn(o + " is not item, itemstack, nor block.");
+            VoodooCraft.LOGGER.warn(o + " is not item, itemstack, nor block.");
             return null;
         }
         achievementList.add(a);

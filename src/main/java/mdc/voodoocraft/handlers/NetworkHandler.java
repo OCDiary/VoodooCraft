@@ -1,6 +1,6 @@
 package mdc.voodoocraft.handlers;
 
-import mdc.voodoocraft.Reference;
+import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.messages.MessageCapability;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class NetworkHandler {
 
-    public static SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID.toLowerCase());
+    public static SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(VoodooCraft.MODID.toLowerCase());
     private static int packedID = 0;
 
     public static void init()

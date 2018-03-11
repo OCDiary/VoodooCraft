@@ -1,6 +1,6 @@
 package mdc.voodoocraft.items;
 
-import mdc.voodoocraft.VCTabs;
+import mdc.voodoocraft.VoodooCraft;
 import net.minecraft.item.Item;
 
 public class VCItem extends Item
@@ -9,6 +9,6 @@ public class VCItem extends Item
     {
         setUnlocalizedName(name);
         setRegistryName(name);
-        setCreativeTab(VCTabs.VOODOO_TAB);
+        setCreativeTab(VoodooCraft.VOODOO_TAB);
     }
 }

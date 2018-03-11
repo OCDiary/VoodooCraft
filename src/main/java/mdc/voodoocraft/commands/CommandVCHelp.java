@@ -2,8 +2,7 @@ package mdc.voodoocraft.commands;
 
 import java.util.*;
 
-import mdc.voodoocraft.VoodooCraft;
-import mdc.voodoocraft.config.*;
+import mdc.voodoocraft.VoodooConfig;
 import net.minecraft.command.*;
 import net.minecraft.server.*;
 import net.minecraft.util.math.*;

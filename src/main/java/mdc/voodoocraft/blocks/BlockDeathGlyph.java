@@ -32,7 +32,6 @@ public class BlockDeathGlyph extends VCModelBlock implements ITileEntityProvider
     {
         super("death_glyph", Material.CIRCUITS);
         setHardness(40f);
-        isBlockContainer = true;
     }
 
     @Override
@@ -47,8 +46,9 @@ public class BlockDeathGlyph extends VCModelBlock implements ITileEntityProvider
         return BlockGlyph.hitbox;
     }
 
+    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return NULL_AABB;
     }
@@ -66,18 +66,19 @@ public class BlockDeathGlyph extends VCModelBlock implements ITileEntityProvider
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if(world.isRemote) return true;
+        ItemStack heldItem = player.getHeldItem(hand);
         TileDeathGlyph te = (TileDeathGlyph) world.getTileEntity(pos);
         if(te == null) return false;
-        if(heldItem == null)
+        if(heldItem.isEmpty())
         {
             //Submit XP if can
             if(te.getXPLevels() > 0 && player.experienceLevel >= te.getXPLevels())
             {
                 player.sendMessage(new TextComponentString("Sacrificed " + te.getXPLevels() + " XP levels"));
-                player.removeExperienceLevel(te.getXPLevels());
+                player.addExperienceLevel(-te.getXPLevels());
                 te.submitXPLevels();
             }
             else
@@ -99,8 +100,8 @@ public class BlockDeathGlyph extends VCModelBlock implements ITileEntityProvider
             if(te.submitStack(heldItem))
             {
                 player.sendMessage(new TextComponentString("Sacrificed " + heldItem.getDisplayName()));
-                heldItem.stackSize--;
-                if(heldItem.stackSize <= 0) heldItem = null;
+                heldItem.shrink(1);
+                if(heldItem.getCount() <= 0) heldItem = null;
                 player.setHeldItem(hand, heldItem);
             }
             else if(heldItem.getItem() == VCItems.COIN && !te.hasUsedCoin())
@@ -108,8 +109,8 @@ public class BlockDeathGlyph extends VCModelBlock implements ITileEntityProvider
                 //Submit coin as substitute
                 ItemStack stack = te.substitute();
                 player.sendMessage(new TextComponentString("Coin submitted as substitute for item " + stack.getDisplayName()));
-                heldItem.stackSize--;
-                if(heldItem.stackSize <= 0) heldItem = null;
+                heldItem.shrink(1);
+                if(heldItem.getCount() <= 0) heldItem = null;
                 player.setHeldItem(hand, heldItem);
             }
             else

@@ -1,13 +1,22 @@
 package mdc.voodoocraft.init;
 
+import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.hexes.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class VCHexes
 {
+	public static IForgeRegistry<HexEntry> REGISTRY;
 	public static Map<String, HexEntry> HEXES = new HashMap<>();
+
+	private static void addHex(HexEntry hex)
+	{
+		HEXES.put(hex.getName(), hex);
+	}
 
 	public static void init()
 	{
@@ -46,14 +55,15 @@ public class VCHexes
 		addHex(new HexRocket());
 		addHex(new HexZoom());
 	}
-	
-	private static void addHex(HexEntry hex)
-	{
-		HEXES.put(hex.getRawName(), hex);
-	}
 
 	public static HexEntry getHex(String name)
 	{
-		return HEXES.get(name);
+		return REGISTRY.getValue(new ResourceLocation(VoodooCraft.MODID, name));
+	}
+
+	public static HexEntry[] getHexes()
+	{
+		if(HEXES.isEmpty()) init();
+		return HEXES.values().toArray(new HexEntry[HEXES.size()]);
 	}
 }

@@ -1,6 +1,6 @@
 package mdc.voodoocraft.capability.glyphs;
 
-import mdc.voodoocraft.Reference;
+import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.capability.CapabilityProvider;
 import mdc.voodoocraft.handlers.NetworkHandler;
 import mdc.voodoocraft.init.VCCapabilities;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CapabilityGlyphs implements ICapGlyphs
 {
-    private static final ResourceLocation glyphsRL = new ResourceLocation(Reference.MODID, "_Glyphs");
+    private static final ResourceLocation glyphsRL = new ResourceLocation(VoodooCraft.MODID, "_Glyphs");
 
     private List<EnumGlyphType> knownGlyphs = new ArrayList<>();
 

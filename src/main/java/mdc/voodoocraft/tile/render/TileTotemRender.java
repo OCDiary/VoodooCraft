@@ -2,10 +2,10 @@ package mdc.voodoocraft.tile.render;
 
 import mdc.voodoocraft.tile.TileTotem;
 import mdc.voodoocraft.util.EnumGlyphType;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class TileTotemRender extends TileEntitySpecialRenderer<TileTotem>
 {
-    public void renderTileEntityAt(TileTotem te, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileTotem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         for(EnumFacing side : EnumFacing.HORIZONTALS)
         {
@@ -37,7 +37,7 @@ public class TileTotemRender extends TileEntitySpecialRenderer<TileTotem>
             bindTexture(glyph.getTextureLocation());
 
             Tessellator tes = Tessellator.getInstance();
-            VertexBuffer buf = tes.getBuffer();
+            BufferBuilder buf = tes.getBuffer();
             buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
             float offset = (1f / 16f) * 0.9f;

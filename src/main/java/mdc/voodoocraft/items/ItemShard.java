@@ -3,6 +3,7 @@ package mdc.voodoocraft.items;
 import mdc.voodoocraft.util.NBTHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +36,8 @@ public class ItemShard extends VCItem {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
         if(checkNBTInfo(stack))
                 tooltip.add(I18n.format("shard.type.empty.name"));
         else

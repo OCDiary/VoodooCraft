@@ -4,37 +4,27 @@ import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.hexes.HexZoom;
 import mdc.voodoocraft.init.VCBlocks;
 import mdc.voodoocraft.util.HexHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashMap;
 import java.util.UUID;
-
-import static net.minecraft.client.settings.GameSettings.Options.FOV;
 
 @Mod.EventBusSubscriber
 public class HexHandler
@@ -77,11 +67,11 @@ public class HexHandler
         ItemStack stack = null;
 
         //Fire Aura - Sets attacking entity on fire
-        if(event.getSource().getSourceOfDamage() != null && (stack = getDollWithHex(entity, "fireAura")) != null)
-            event.getSource().getSourceOfDamage().setFire(2);
+        if(event.getSource().getTrueSource() != null && (stack = getDollWithHex(entity, "fireAura")) != null)
+            event.getSource().getTrueSource().setFire(2);
 
         //Water Breathing - Uses player's hunger if possible when they're drowning
-        if(event.getSource().equals(DamageSource.drown) && (stack = getDollWithHex(entity, "waterBreathing")) != null)
+        if(event.getSource().equals(DamageSource.DROWN) && (stack = getDollWithHex(entity, "waterBreathing")) != null)
         {
             FoodStats food = ((EntityPlayer) entity).getFoodStats();
             if(food.getFoodLevel() > 0)
@@ -106,7 +96,7 @@ public class HexHandler
         ItemStack stack;
 
         //Protection - Absorbs some damage, with a 10s cooldown
-        if(event.getSource().getSourceOfDamage() != null && (stack = getDollWithHex(entity, "protection")) != null)
+        if(event.getSource().getTrueSource() != null && (stack = getDollWithHex(entity, "protection")) != null)
         {
             UUID uuid = entity.getUniqueID();
             Long cooldownStart = protectionCooldowns.get(uuid);
@@ -151,12 +141,12 @@ public class HexHandler
             if(player.motionX != 0F || player.motionZ != 0F) {
                 BlockPos newPos = player.getPosition();
                 if(world.getTotalWorldTime() % 15 == 0) {
-                    VoodooCraft.log.info("OldPos: " + oldPos + ", NewPos: " + newPos);
+                    VoodooCraft.LOGGER.info("OldPos: " + oldPos + ", NewPos: " + newPos);
                 }
                 if (oldPos != newPos) {
                     world.setBlockState(oldPos, Blocks.AIR.getDefaultState());
                     world.setBlockState(newPos, VCBlocks.LIGHT_SOURCE.getDefaultState());
-                    VoodooCraft.log.info("Changing light source locationg...");
+                    VoodooCraft.LOGGER.info("Changing light source locationg...");
                 }
             }else{
                 world.setBlockState(player.getPosition(), VCBlocks.LIGHT_SOURCE.getDefaultState());
@@ -177,7 +167,7 @@ public class HexHandler
             if (mat == Material.WATER) {
                 float newY = position.getY() + 10.0F;
                 player.setPosition(position.getX(), newY, position.getZ());
-                VoodooCraft.log.info("Walking on water!");
+                VoodooCraft.LOGGER.info("Walking on water!");
             }
         }
     }

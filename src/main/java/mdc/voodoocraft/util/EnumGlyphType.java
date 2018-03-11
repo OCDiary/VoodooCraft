@@ -1,6 +1,6 @@
 package mdc.voodoocraft.util;
 
-import mdc.voodoocraft.Reference;
+import mdc.voodoocraft.VoodooCraft;
 import mdc.voodoocraft.capability.glyphs.ICapGlyphs;
 import mdc.voodoocraft.init.VCCapabilities;
 import net.minecraft.client.resources.I18n;
@@ -49,7 +49,7 @@ public enum EnumGlyphType implements IStringSerializable {
 	public ResourceLocation getTextureLocation()
 	{
 		if(textureLocation == null)
-			textureLocation = new ResourceLocation(Reference.MODID, "textures/blocks/glyph_" + getName() + ".png");
+			textureLocation = new ResourceLocation(VoodooCraft.MODID, "textures/blocks/glyph_" + getName() + ".png");
 		return textureLocation;
 	}
 	

@@ -30,10 +30,10 @@ public class TileDollPedestal extends TileEntity implements ITickable
 
     public boolean putDollStack(ItemStack stack, EntityPlayer player)
     {
-        if(getDollStack() != null || stack == null || !(stack.getItem() instanceof ItemDoll)) return false;
+        if(!getDollStack().isEmpty() || !(stack.getItem() instanceof ItemDoll)) return false;
         this.player = player;
         markDirty();
-        return itemStackHandler.insertItem(0, stack, false) == null;
+        return itemStackHandler.insertItem(0, stack, false).isEmpty();
     }
 
     public void clearDollStack()
@@ -51,12 +51,12 @@ public class TileDollPedestal extends TileEntity implements ITickable
 	{
 		if(world.isRemote) return;
 		ItemStack stack = itemStackHandler.getStackInSlot(0);
-		if(stack != null && stack.getItem() instanceof ItemDoll)
+		if(stack.getItem() instanceof ItemDoll)
         {
             //Tick the doll inside
             HexHelper.activatePassive(stack, world, player);
             //Check doll damage
-            if(stack.stackSize <= 0) clearDollStack();
+            if(stack.getCount() <= 0) clearDollStack();
             markDirty();
         }
 	}

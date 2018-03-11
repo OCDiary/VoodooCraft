@@ -28,7 +28,7 @@ public class MessageCapability implements IMessage
     public MessageCapability(Capability<? extends ICapability> capability, NBTTagCompound capNBT)
     {
         capID = VCCapabilities.getCapabilityID(capability);
-        if(capID == -1) VoodooCraft.log.error("Couldn't find an ID for the capability! Nothing will get updated on the client.");
+        if(capID == -1) VoodooCraft.LOGGER.error("Couldn't find an ID for the capability! Nothing will get updated on the client.");
         this.capNBT = capNBT;
     }
 

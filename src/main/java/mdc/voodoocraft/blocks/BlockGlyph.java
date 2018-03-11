@@ -8,7 +8,6 @@ import mdc.voodoocraft.util.EnumGlyphType;
 import mdc.voodoocraft.util.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -25,6 +25,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockGlyph extends VCModelBlock{
 
@@ -40,14 +42,16 @@ public class BlockGlyph extends VCModelBlock{
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{TYPE});
+		return new BlockStateContainer(this, TYPE);
 	}
-	
+
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-		if(stack != null && stack.getItem() == VCItems.CHALK_BASIC) return this.getDefaultState().withProperty(TYPE, EnumGlyphType.byIndex(NBTHelper.getTagCompound(stack).getInteger(ItemChalk.KEY_GLYPH)));
-		return this.getDefaultState();
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
+		ItemStack stack = placer.getHeldItem(hand);
+		return stack.getItem() == VCItems.CHALK_BASIC ?
+				getDefaultState().withProperty(TYPE, EnumGlyphType.byIndex(NBTHelper.getTagCompound(stack).getInteger(ItemChalk.KEY_GLYPH))) :
+				getDefaultState();
 	}
 	
 	@Override
@@ -68,16 +72,14 @@ public class BlockGlyph extends VCModelBlock{
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
 	}
-	
+
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
-    {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	{
 		if(!canBlockStay(worldIn, pos))
-		{
 			worldIn.destroyBlock(pos, false);
-		}
-    }
-	
+	}
+
 	public boolean canBlockStay(World worldIn, BlockPos pos)
     {
         return worldIn.isSideSolid(pos.down(), EnumFacing.UP, false);
@@ -99,15 +101,16 @@ public class BlockGlyph extends VCModelBlock{
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return hitbox;
 	}
-	
+
+	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	{
 		return NULL_AABB;
 	}
-	
+
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
-			EntityPlayer player) {
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		ItemStack stack = new ItemStack(VCItems.CHALK_BASIC);
 		NBTTagCompound nbt = NBTHelper.getTagCompound(stack);
 		nbt.setInteger(ItemChalk.KEY_GLYPH, state.getValue(TYPE).ordinal());

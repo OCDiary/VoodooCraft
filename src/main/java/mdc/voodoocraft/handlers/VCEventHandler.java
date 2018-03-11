@@ -1,7 +1,7 @@
 package mdc.voodoocraft.handlers;
 
 import mdc.voodoocraft.VoodooCraft;
-import mdc.voodoocraft.config.VoodooConfig;
+import mdc.voodoocraft.VoodooConfig;
 import mdc.voodoocraft.init.VCBlocks;
 import mdc.voodoocraft.tile.TileDeathGlyph;
 import net.minecraft.block.Block;
@@ -175,7 +175,7 @@ public class VCEventHandler {
 			TileEntity te = world.getTileEntity(pos);
 			if(te == null || !(te instanceof TileDeathGlyph))
 			{
-				VoodooCraft.log.error("Failed to get a tile entity for the Death Glyph! Player's inventory not saved!");
+				VoodooCraft.LOGGER.error("Failed to get a tile entity for the Death Glyph! Player's inventory not saved!");
 				return true;
 			}
 			((TileDeathGlyph) te).savePlayerInventory(player);

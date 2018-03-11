@@ -26,18 +26,18 @@ public class SandToSoulsand {
 	public static void rightClickBlock(PlayerInteractEvent e)
 	{
 		World world = e.getWorld();
-		if(!world.isRemote && e.getEntityPlayer().getHeldItem(e.getHand()) == null)
+		if(!world.isRemote && e.getEntityPlayer().getHeldItem(e.getHand()).isEmpty())
 		{
 			BlockPos pos = e.getPos();
 			if(world.getBlockState(pos).getBlock()==VCBlocks.GLYPH && world.getBlockState(pos).getValue(BlockGlyph.TYPE) == EnumGlyphType.BASIC)
 			{
 				for(EntityItem entity : e.getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(1, 1, 1))))
 				{
-					ItemStack stack = entity.getEntityItem();
+					ItemStack stack = entity.getItem();
 					if(stack.getItem() == Item.getItemFromBlock(Blocks.NETHERRACK))
 					{
-						stack.stackSize--;
-						entity.setEntityItemStack(stack);
+						stack.shrink(1);
+						entity.setItem(stack);
 						setSandBelowToSoul(world, pos);
 						break;
 					}
@@ -46,9 +46,9 @@ public class SandToSoulsand {
 		}	
 	}
 	
-	public static void setSandBelowToSoul(World world, BlockPos pos)
+	private static void setSandBelowToSoul(World world, BlockPos pos)
 	{
-		List<BlockPos> list = new ArrayList<BlockPos>();
+		List<BlockPos> list = new ArrayList<>();
 		list.addAll(threebyThreeAroundPos(pos.down()));
 		list.addAll(threebyThreeAroundPos(pos.down(2)));
 		list.addAll(threebyThreeAroundPos(pos.down(3)));
@@ -61,9 +61,10 @@ public class SandToSoulsand {
 			}
 		}
 	}
-	public static List<BlockPos> threebyThreeAroundPos(BlockPos pos)
+
+	private static List<BlockPos> threebyThreeAroundPos(BlockPos pos)
 	{
-		return Lists.<BlockPos>newArrayList(
+		return Lists.newArrayList(
 				pos,
 				pos.east(),
 				pos.east().north(),

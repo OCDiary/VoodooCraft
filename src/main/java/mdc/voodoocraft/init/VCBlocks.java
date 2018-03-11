@@ -23,34 +23,7 @@ public class VCBlocks
     public static List<Block> BLOCKS = new ArrayList<>();
     public static List<ItemBlock> ITEM_BLOCKS = new ArrayList<>();
 
-    public static final Block GLYPH, DOLL_PEDESTAL, SHRINE, TOTEM, LIGHT_SOURCE, DEATH_GLYPH;
-
-    static
-    {
-        //Add the blocks - these will get registered later in RegHandler and models registered in ModelHandler
-        addBlock(GLYPH = new BlockGlyph());
-        addBlock(DOLL_PEDESTAL = new BlockDollPedestal());
-        addBlock(SHRINE = new BlockShrine());
-        addBlock(TOTEM = new BlockTotem());
-        addBlock(DEATH_GLYPH = new BlockDeathGlyph());
-        addBlock(LIGHT_SOURCE = new BlockLightSource());
-    }
-
-    public static void registerTileEntities()
-    {
-        //Register Tile Entities
-        regTE(TileDollPedestal.class, DOLL_PEDESTAL);
-        regTE(TileTotem.class, TOTEM);
-        regTE(TileDeathGlyph.class, DEATH_GLYPH);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static void registerTileEntityRenders()
-    {
-        //Register TESRs
-        regTESR(TileDollPedestal.class, new TileDollPedestalRender());
-        regTESR(TileTotem.class, new TileTotemRender());
-    }
+    public static Block GLYPH, DOLL_PEDESTAL, SHRINE, TOTEM, LIGHT_SOURCE, DEATH_GLYPH;
 
     private static void addBlock(Block block)
     {
@@ -68,9 +41,46 @@ public class VCBlocks
         GameRegistry.registerTileEntity(teClass, block.getRegistryName().getResourcePath());
     }
 
-    @SideOnly(Side.CLIENT)
     private static <T extends TileEntity> void regTESR(Class<? extends T> teClass, TileEntitySpecialRenderer<? super T> tesr)
     {
         ClientRegistry.bindTileEntitySpecialRenderer(teClass, tesr);
+    }
+
+    private static void init()
+    {
+        addBlock(GLYPH = new BlockGlyph());
+        addBlock(DOLL_PEDESTAL = new BlockDollPedestal());
+        addBlock(SHRINE = new BlockShrine());
+        addBlock(TOTEM = new BlockTotem());
+        addBlock(DEATH_GLYPH = new BlockDeathGlyph());
+        addBlock(LIGHT_SOURCE = new BlockLightSource());
+    }
+
+    public static void initTEs()
+    {
+        //Register Tile Entities
+        regTE(TileDollPedestal.class, DOLL_PEDESTAL);
+        regTE(TileTotem.class, TOTEM);
+        regTE(TileDeathGlyph.class, DEATH_GLYPH);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void initTESRs()
+    {
+        //Register TESRs
+        regTESR(TileDollPedestal.class, new TileDollPedestalRender());
+        regTESR(TileTotem.class, new TileTotemRender());
+    }
+
+    public static Block[] getBlocks()
+    {
+        if(BLOCKS.isEmpty()) init();
+        return BLOCKS.toArray(new Block[BLOCKS.size()]);
+    }
+
+    public static ItemBlock[] getItemBlocks()
+    {
+        if(ITEM_BLOCKS.isEmpty()) init();
+        return ITEM_BLOCKS.toArray(new ItemBlock[ITEM_BLOCKS.size()]);
     }
 }

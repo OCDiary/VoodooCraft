@@ -1,53 +1,49 @@
 package mdc.voodoocraft;
 
+import mdc.voodoocraft.handlers.NetworkHandler;
+import mdc.voodoocraft.init.VCCapabilities;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 
-import mdc.voodoocraft.proxy.CommonProxy;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MCVERSIONS, guiFactory = Reference.GUI_FACTORY, canBeDeactivated = false)
+@Mod(modid = VoodooCraft.MODID, name = VoodooCraft.NAME, version = VoodooCraft.VERSION, acceptedMinecraftVersions = VoodooCraft.MCVERSIONS)
 public class VoodooCraft {
 
-    @Mod.Instance(Reference.MODID)
+    public static final String MODID = "voodoocraft";
+    public static final String NAME = "VoodooCraft";
+    public static final String VERSION = "@VERSION@";
+    public static final String MCVERSIONS = "[1.12.2]";
+
+    @Mod.Instance(VoodooCraft.MODID)
     public static VoodooCraft instance;
 
-    @SidedProxy(clientSide = Reference.CPROXY, serverSide = Reference.SPROXY)
-    public static CommonProxy proxy;
+    public static Logger LOGGER;
 
-    public static final Logger log = FMLLog.getLogger();
+    public static final CreativeTabs VOODOO_TAB = new CreativeTabs(MODID)
+    {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public ItemStack getTabIconItem()
+        {
+            return new ItemStack(Items.SKULL);
+        }
+
+        @Override
+        public boolean hasSearchBar() {
+            return true;
+        }
+    }.setBackgroundImageName("item_search.png");
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e){
-        log.info("voodoocraft Pre-Init");
-        proxy.preInit(e);
-    }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent e){
-        log.info("voodoocraft Init");
-        proxy.init(e);
-    }
-
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent e){
-        log.info("voodoocraft Post-Init");
-        proxy.postInit(e);
-    }
-    
-    @Mod.EventHandler
-    public void serverStarting(FMLServerStartingEvent e) {
-    	proxy.serverStarting(e);
-    }
-    
-    @Mod.EventHandler
-    public void serverStopping(FMLServerStoppingEvent e) {
-    	proxy.serverStopping(e);
+        LOGGER = e.getModLog();
+        VCCapabilities.init();
+        NetworkHandler.init();
     }
 }

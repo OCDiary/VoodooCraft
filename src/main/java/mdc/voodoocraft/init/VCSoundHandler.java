@@ -1,6 +1,6 @@
 package mdc.voodoocraft.init;
 
-import mdc.voodoocraft.Reference;
+import mdc.voodoocraft.VoodooCraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
@@ -22,7 +22,7 @@ public class VCSoundHandler {
 
     public static SoundEvent register(String name)
     {
-        ResourceLocation loc = new ResourceLocation(Reference.MODID, name);
+        ResourceLocation loc = new ResourceLocation(VoodooCraft.MODID, name);
         SoundEvent sEvent = new SoundEvent(loc);
         SoundEvent.REGISTRY.register(ID++, loc, sEvent);
         return sEvent;

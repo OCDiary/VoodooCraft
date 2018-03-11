@@ -2,8 +2,10 @@ package mdc.voodoocraft.tile;
 
 import com.sun.istack.internal.NotNull;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -12,14 +14,12 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TileDeathGlyph extends TileEntity
 {
@@ -38,27 +38,23 @@ public class TileDeathGlyph extends TileEntity
         //Pick 3 random items or blocks
         while(requiredStacks.size() < 3)
         {
+            Item item;
             if(rand.nextBoolean())
             {
                 //Item
-                Item item = Item.REGISTRY.getRandomObject(rand);
-                if(item == null) continue;
-                List<ItemStack> subItems = new ArrayList<>();
-                item.getSubItems(item, null, subItems);
-                ItemStack stack = subItems.get(rand.nextInt(subItems.size()));
-                if(hasRecipe(stack)) requiredStacks.add(stack);
+                item = Item.REGISTRY.getRandomObject(rand);
             }
             else
             {
                 //Block
                 Block block = Block.REGISTRY.getRandomObject(rand);
-                Item item = Item.getItemFromBlock(block);
-                if(item == null) continue;
-                List<ItemStack> subItems = new ArrayList<>();
-                block.getSubBlocks(item, null, subItems);
-                ItemStack stack = subItems.get(rand.nextInt(subItems.size()));
-                if(hasRecipe(stack)) requiredStacks.add(stack);
+                item = Item.getItemFromBlock(block);
             }
+            if(item == null || item == Items.AIR) continue;
+            NonNullList<ItemStack> subItems = NonNullList.create();
+            item.getSubItems(CreativeTabs.SEARCH, subItems);
+            ItemStack stack = subItems.get(rand.nextInt(subItems.size()));
+            if(hasRecipe(stack)) requiredStacks.add(stack);
         }
     }
 
@@ -70,9 +66,8 @@ public class TileDeathGlyph extends TileEntity
         if(stack == null) return false;
 
         //Check crafting recipes
-        List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-        for(IRecipe r : recipes)
-            if(r.getRecipeOutput() != null && r.getRecipeOutput().isItemEqual(stack))
+        for(IRecipe r : CraftingManager.REGISTRY)
+            if(r.getRecipeOutput().isItemEqual(stack))
                 return true;
 
         //Check furnace recipes
@@ -159,14 +154,11 @@ public class TileDeathGlyph extends TileEntity
         playerInventory = new NBTTagCompound();
         InventoryPlayer playerInv = player.inventory;
         writeStacksToNBT(playerInventory, "main", playerInv.mainInventory);
-        for(int i = 0; i < playerInv.mainInventory.length; i++)
-            playerInv.mainInventory[i] = null;
+        //playerInv.mainInventory.clear();
         writeStacksToNBT(playerInventory, "armour", playerInv.armorInventory);
-        for(int i = 0; i < playerInv.armorInventory.length; i++)
-            playerInv.armorInventory[i] = null;
+        //playerInv.armorInventory.clear();
         writeStacksToNBT(playerInventory, "offhand", playerInv.offHandInventory);
-        for(int i = 0; i < playerInv.offHandInventory.length; i++)
-            playerInv.offHandInventory[i] = null;
+        //playerInv.offHandInventory.clear();
     }
 
     /**
@@ -186,37 +178,34 @@ public class TileDeathGlyph extends TileEntity
                 player.dropItem(stack, true);
     }
 
-    private static List<ItemStack> setInvStackList(ItemStack[] invStackList, ItemStack[] stacksToSet)
+    private static List<ItemStack> setInvStackList(NonNullList<ItemStack> invStackList, ItemStack[] stacksToSet)
     {
-        if(invStackList.length != stacksToSet.length)
-            throw new IllegalArgumentException("Stack arrays are not of equal lengths! -> InvArray: " + invStackList.length + "   ToSetArray: " + stacksToSet.length);
+        if(invStackList.size() != stacksToSet.length)
+            throw new IllegalArgumentException("Stack arrays are not of equal lengths! -> InvArray: " + invStackList.size() + "   ToSetArray: " + stacksToSet.length);
         List<ItemStack> excessStacks = new ArrayList<>();
-        for(int i = 0; i < invStackList.length; i++)
+        for(int i = 0; i < invStackList.size(); i++)
         {
-            if(invStackList[i] == null)
-                invStackList[i] = stacksToSet[i];
+            if(invStackList.get(i).isEmpty())
+                invStackList.set(i, stacksToSet[i]);
             else
                 excessStacks.add(stacksToSet[i]);
         }
         return excessStacks;
     }
 
-    private static void writeStacksToNBT(@NotNull NBTTagCompound nbt, @NotNull String key, ItemStack... stacks)
+    private static void writeStacksToNBT(@NotNull NBTTagCompound nbt, @NotNull String key, NonNullList<ItemStack> stacks)
     {
         NBTTagList list = new NBTTagList();
-        for(int i = 0; i < stacks.length; i++)
+        for(int i = 0; i < stacks.size(); i++)
         {
-            ItemStack stack = stacks[i];
+            ItemStack stack = stacks.get(i);
             NBTTagCompound stackTag = new NBTTagCompound();
             stackTag.setInteger("index", i);
-            if(stack == null)
-                stackTag.setString("id", "<NULL>");
-            else
-                stack.writeToNBT(stackTag);
+            stack.writeToNBT(stackTag);
             list.appendTag(stackTag);
-            stacks[i] = null;
+            //stacks.set(i, ItemStack.EMPTY);
         }
-        nbt.setInteger(key + "Size", stacks.length);
+        nbt.setInteger(key + "Size", stacks.size());
         nbt.setTag(key, list);
     }
 
@@ -229,16 +218,8 @@ public class TileDeathGlyph extends TileEntity
         {
             NBTTagCompound stackTag = list.getCompoundTagAt(i);
             int index = stackTag.getInteger("index");
-            if(stackTag.getString("id").equals("<NULL>"))
-            {
-                stacks[index] = null;
-                continue;
-            }
-            ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
-            if(stack == null)
-                stacks[index] = null;
-            else
-                stacks[index] = stack;
+            ItemStack stack = new ItemStack(stackTag);
+            stacks[index] = stack;
         }
         return stacks;
     }
@@ -252,7 +233,7 @@ public class TileDeathGlyph extends TileEntity
         requiredStacks.clear();
         NBTTagList stackList = nbt.getTagList("stacks", Constants.NBT.TAG_COMPOUND);
         for(int i = 0; i < stackList.tagCount(); i++)
-            requiredStacks.add(ItemStack.loadItemStackFromNBT(stackList.getCompoundTagAt(i)));
+            requiredStacks.add(new ItemStack(stackList.getCompoundTagAt(i)));
 
         playerInventory = nbt.getCompoundTag("player");
 

@@ -1,7 +1,5 @@
 package mdc.voodoocraft.blocks;
 
-import javax.annotation.Nullable;
-
 import mdc.voodoocraft.tile.TileDollPedestal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +22,6 @@ public class BlockDollPedestal extends VCModelBlock implements ITileEntityProvid
 	public BlockDollPedestal()
 	{
 		super("dollpedestal");
-		isBlockContainer = true;
 	}
 
 	@Override
@@ -38,29 +35,30 @@ public class BlockDollPedestal extends VCModelBlock implements ITileEntityProvid
 	{
 		return new TileDollPedestal();
 	}
-	
+
 	/**
 	 * Puts dolls in and out of the pedestal.
 	 */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-		TileDollPedestal tile = (TileDollPedestal)worldIn.getTileEntity(pos);
+		TileDollPedestal tile = (TileDollPedestal) world.getTileEntity(pos);
 		if(tile == null) return false;
+		ItemStack heldItem = player.getHeldItem(hand);
 		ItemStack dollStack = tile.getDollStack();
-		if(dollStack == null)
+		if(dollStack.isEmpty())
 		{
 			//Add the held doll to the pedestal
-			if(heldItem != null && tile.putDollStack(heldItem, playerIn))
-				playerIn.setHeldItem(hand, null);
+			if(!heldItem.isEmpty() && tile.putDollStack(heldItem, player))
+				player.setHeldItem(hand, ItemStack.EMPTY);
 		}
 		else
 		{
 			//Remove the doll from the pedestal
-			if(heldItem == null)
-				playerIn.setHeldItem(hand, dollStack);
-			else if(!playerIn.inventory.addItemStackToInventory(dollStack))
-				playerIn.dropItem(dollStack, true);
+			if(heldItem.isEmpty())
+				player.setHeldItem(hand, dollStack);
+			else if(!player.inventory.addItemStackToInventory(dollStack))
+				player.dropItem(dollStack, true);
 			tile.clearDollStack();
 		}
         return true;

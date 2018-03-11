@@ -1,9 +1,10 @@
 package mdc.voodoocraft.hexes;
 
 import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import mdc.voodoocraft.util.HexHelper;
+import mdc.voodoocraft.util.Util;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,39 +14,52 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.concurrent.TimeUnit;
 
 @EventBusSubscriber
-public class HexEntry
+public class HexEntry extends IForgeRegistryEntry.Impl<HexEntry>
 {
 	private String unlocalizedName;
     
     public HexEntry(String name)
     {
+        setRegistryName(name);
     	unlocalizedName = name;
     }
 
-    @Nonnull
     @SideOnly(Side.CLIENT)
     public String getDescription()
     {
         return I18n.format("desc." + getUnlocalizedName());
     }
     
-    @Nonnull
     public String getUnlocalizedName()
     {
     	return "hex." + unlocalizedName + ".name";
     }
 
-    public String getRawName()
+    public String getName()
     {
-        return unlocalizedName;
+        return getRegistryName().getResourcePath();
     }
     
     @SideOnly(Side.CLIENT)
     public String getLocalisedName()
     {
     	return I18n.format(getUnlocalizedName());
+    }
+
+    protected String getThreadName(EntityPlayer user)
+    {
+        return user.getName() + "-" + getName();
+    }
+
+    protected boolean runPeriodically(EntityPlayer player, Runnable runnable, int delay, int period, TimeUnit timeUnit, int repetitions)
+    {
+        //TODO: WIP runPeriodically
+        return HexHelper.runPeriodically(Util.getMainThread(player.world), getThreadName(player), runnable, delay, period, timeUnit, repetitions);
     }
 
     /**
@@ -64,7 +78,7 @@ public class HexEntry
      * @param target null unless an entity has been clicked on
      * @return the ItemStack to update the player's active ItemStack
      */
-	public ItemStack activeUse(ItemStack stackIn, World world, EntityPlayer player, int strength, @Nullable EntityLivingBase target)
+	public ItemStack activeUse(ItemStack stackIn, World world, EntityPlayer player, EnumHand hand, int strength, @Nullable EntityLivingBase target)
     {
 		return stackIn;
 	}

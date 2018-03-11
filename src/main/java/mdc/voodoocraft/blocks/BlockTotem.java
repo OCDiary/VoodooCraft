@@ -1,6 +1,6 @@
 package mdc.voodoocraft.blocks;
 
-import mdc.voodoocraft.config.VoodooConfig;
+import mdc.voodoocraft.VoodooConfig;
 import mdc.voodoocraft.init.VCItems;
 import mdc.voodoocraft.tile.TileTotem;
 import mdc.voodoocraft.util.EnumGlyphType;
@@ -15,14 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class BlockTotem extends VCBlockContainer implements ITileEntityProvider
 {
     public BlockTotem()
     {
         super("totem");
-        isBlockContainer = true;
     }
 
     @Override
@@ -32,12 +29,13 @@ public class BlockTotem extends VCBlockContainer implements ITileEntityProvider
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(worldIn.isRemote) return false;
-        if(heldItem != null)
+        if(world.isRemote) return false;
+        ItemStack heldItem = player.getHeldItem(hand);
+        if(!heldItem.isEmpty())
         {
-            TileTotem te = (TileTotem) worldIn.getTileEntity(pos);
+            TileTotem te = (TileTotem) world.getTileEntity(pos);
             if(te == null) return false;
 
             if(heldItem.getItem() == VCItems.TOOL1)
@@ -50,10 +48,11 @@ public class BlockTotem extends VCBlockContainer implements ITileEntityProvider
             {
                 //Cycle to next glyph on side
                 EnumGlyphType glyph = te.getSide(side);
-                glyph = glyph == null ? EnumGlyphType.BASIC : playerIn.capabilities.isCreativeMode ? glyph.next() : glyph.nextKnown(playerIn);
+                glyph = glyph == null ? EnumGlyphType.BASIC : player.capabilities.isCreativeMode ? glyph.next() : glyph.nextKnown(player);
                 te.setSide(side, glyph);
                 //Send chat message to the player
-                if(VoodooConfig.advancedOutput) playerIn.sendStatusMessage(new TextComponentTranslation("voodoo.glyphset.info", glyph.getLocalName()));
+                if(VoodooConfig.advancedOutput)
+                    player.sendMessage(new TextComponentTranslation("voodoo.glyphset.info", glyph.getLocalName()));
                 return true;
             }
         }
