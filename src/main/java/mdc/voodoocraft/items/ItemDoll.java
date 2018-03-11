@@ -53,7 +53,7 @@ public class ItemDoll extends VCItem
             items.add(new ItemStack(this));
 
             //Add a doll for every Hex
-            for(HexEntry entry : VCHexes.HEXES.values())
+            for(HexEntry entry : VCHexes.REGISTRY)
             {
                 ItemStack dollWithHex = HexHelper.setHexes(new ItemStack(this), new Hex(entry));
                 items.add(dollWithHex);

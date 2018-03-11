@@ -35,6 +35,7 @@ public class RegHandler
                 .create();
     }
 
+    @SubscribeEvent
     public static void registerRegistry(RegistryEvent.NewRegistry event)
     {
         //Register registries

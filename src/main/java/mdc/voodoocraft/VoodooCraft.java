@@ -1,10 +1,11 @@
 package mdc.voodoocraft;
 
 import mdc.voodoocraft.handlers.NetworkHandler;
-import mdc.voodoocraft.init.VCCapabilities;
+import mdc.voodoocraft.init.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
@@ -41,9 +42,21 @@ public class VoodooCraft {
     }.setBackgroundImageName("item_search.png");
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e){
+    public void preInit(FMLPreInitializationEvent e)
+    {
         LOGGER = e.getModLog();
         VCCapabilities.init();
         NetworkHandler.init();
+        VCAdvancementTriggers.init();
+    }
+
+    public void postInit(FMLPostInitializationEvent e)
+    {
+        //Don't need these lists in memory anymore - they're only used for registering
+        VCItems.ITEMS = null;
+        VCBlocks.BLOCKS = null;
+        VCBlocks.ITEM_BLOCKS = null;
+        VCHexes.HEXES = null;
+        VCSounds.SOUNDS = null;
     }
 }
