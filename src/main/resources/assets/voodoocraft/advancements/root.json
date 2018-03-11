@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "voodoocraft:doll"
+        },
+        "title": {
+            "translate": "voodoocraft.advancement.root.title"
+        },
+        "description": {
+            "translate": "voodoocraft.advancement.root.desc"
+        },
+        "background": "minecraft:textures/blocks/bone_block_side.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:crafting_table"
+                    }
+                ]
+            }
+        }
+    }
+}

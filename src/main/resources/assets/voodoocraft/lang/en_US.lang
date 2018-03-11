@@ -16,14 +16,6 @@ tile.death_glyph.name=Death Glyph
 hex.regeneration.name=Regeneration
 desc.hex.regeneration.name=gives you regeneration!
 
-#Commands
-
-#Misc
-press.for.info.name=Press %s for more information
-shard.type.name=Shard Bound To: %s
-shard.type.empty.name=Empty Shard
-voodoo.glyphset.info=Glyph set: %s
-
 #Glyphs
 glyph.basic.name=Basic
 glyph.air.name=Air
@@ -38,3 +30,15 @@ glyph.time.name=Time
 glyph.speed.name=Speed
 glyph.power.name=Power
 glyph.link.name=Link
+
+#Advancements
+voodoocraft.advancement.root.title=VoodooCraft
+voodoocraft.advancement.root.desc=The kind of things you hide from your friends...
+voodoocraft.advancement.hex.title=The First Dark Step
+voodoocraft.advancement.hex.desc=Apply a hex to a doll
+
+#Misc
+press.for.info.name=Press %s for more information
+shard.type.name=Shard Bound To: %s
+shard.type.empty.name=Empty Shard
+voodoo.glyphset.info=Glyph set: %s

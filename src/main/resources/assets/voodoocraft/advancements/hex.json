@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "voodoocraft:chalk"
+        },
+        "title": {
+            "translate": "voodoocraft.advancement.hex.title"
+        },
+        "description": {
+            "translate": "voodoocraft.advancement.hex.desc"
+        }
+    },
+    "parent": "voodoocraft:root",
+    "criteria": {
+        "trigger": {
+            "trigger": "voodoocraft:hex"
+        }
+    }
+}
